@@ -1,4 +1,4 @@
-import { Button } from '@mui/material'
+import { Button, Card } from '@mui/material'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -10,8 +10,10 @@ export const UserAccount = props=> {
     const dispatch= useDispatch()
 
     useEffect(()=>{
-        dispatch(getUser())
-        dispatch(getBills())
+        if(localStorage.getItem('token')) {
+            dispatch(getUser())
+            dispatch(getBills())
+        }
     }, [dispatch])
     
     const registerUser=useSelector(state=>state.user.data)
@@ -27,13 +29,17 @@ export const UserAccount = props=> {
             <Link to='/products'><Button >Products</Button></Link>
             <Link to='/bills'><Button >Bills</Button></Link>
             <Link to='/'><Button onClick={handleLogout} color='error'>Logout</Button></Link>
-            <h2>Welcome {username}!</h2>
-            <h3>Please find your account details:</h3>
-            <p>Username: {username}</p>
-            <p>Email: {email}</p>
-            <p>Business Name: {businessName}</p>
-            <p>Address: {address}</p>
-            <Link to='/bills'><p>No. of Bills created: {numberOfBills}</p></Link>
+            <Card variant='outlined'>
+                {/* <CardContent> */}
+                <h2>Welcome {username}!</h2>
+                <h3>Please find your account details:</h3>
+                <p>Username: {username}</p>
+                <p>Email: {email}</p>
+                <p>Business Name: {businessName}</p>
+                <p>Address: {address}</p>
+                <p>No. of Bills created: <Link to='/bills'>{numberOfBills}</Link></p>
+                {/* </CardContent> */}
+            </Card>
         </div>
     )
 }

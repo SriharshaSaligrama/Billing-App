@@ -9,14 +9,18 @@ import { getProducts } from '../../redux/productSlice';
 import { last5items } from '../../selectors/last5';
 import { getBills } from '../../redux/billSlice';
 import { Card } from '@mui/material';
+import { Chart } from "react-google-charts";
+import { uniq } from 'lodash'
 
 export const Home = props=> {
     const dispatch=useDispatch()
 
     useEffect(()=>{
-        dispatch(getCustomers())
-        dispatch(getProducts())
-        dispatch(getBills())
+        if(localStorage.getItem('token')){
+            dispatch(getCustomers())
+            dispatch(getProducts())
+            dispatch(getBills())
+        }
     }, [dispatch])
 
     let totalBills=0, totalCustomers=0, totalProducts=0, AllBillsByCustomer=0
@@ -27,6 +31,46 @@ export const Home = props=> {
     totalCustomers=allCustomers.length
     totalProducts=allProducts.length
     totalBills=allBills.length
+
+    const data=allBills?.map(bill=>bill?.date)
+    //console.log(amount)
+    const uniqueData=uniq(data)
+    //console.log(uniqueData)
+    
+    const dateBills=[]
+    uniqueData?.forEach((data,i)=>{
+        dateBills[i]= allBills?.filter(bill=>bill?.date===data).length
+    })
+    //console.log(billAmount)
+    //console.log(uniqueData, billsPerDate)
+    const billsPerDate=uniqueData?.map((data,i)=>{
+        return [data.slice(0,10), dateBills[i]]
+    })
+    billsPerDate.unshift(['Date', 'Number of Bills'])
+    //console.log(billsPerDate) 
+    const customersCreatedDay=allCustomers?.map(customer=>customer?.createdAt?.slice(0,10))
+    const uniqueCustomersDay=uniq(customersCreatedDay)
+    //console.log(uniqueCustomersDay)
+    const customersDate=[]
+    uniqueCustomersDay?.forEach((day, i)=>{
+        customersDate[i]=allCustomers?.filter(customer=>customer?.createdAt?.slice(0,10)===day).length
+    })
+    //console.log(customersDate)
+    const customersPerDay=uniqueCustomersDay?.map((day, i)=>[day, customersDate[i]])
+    customersPerDay.unshift(['Date', 'Number of Customers'])
+    //console.log(customersPerDay)
+
+    const billOptions = {
+        chart: {
+          title: "Bills per day",
+        },
+    };
+
+    const customerOptions = {
+        chart: {
+          title: "New Customers per day",
+        },
+    };
 
     const last5Customers= allCustomers.length>0?last5items(allCustomers):[]
     const last5Products=allProducts.length>0?last5items(allProducts):[]
@@ -65,11 +109,15 @@ export const Home = props=> {
           renderCell: cellValues=>{
             const id=cellValues.id
             //console.log(id)
+            const custName=allCustomers?.filter(customer=>customer?._id===cellValues.row.customer)
             return(
-              <Link to={`bills/${id}`}><Button>{cellValues.row.date.slice(0,10)} - {id}</Button></Link>
+                <Button>
+                    {custName[0]?.name} - {cellValues.row.date.slice(0,10)} - <Link to={`bills/${id}`}>{id}</Link>
+                </Button>
             )
           }, 
           width: 400,
+          sortable: false
         },
     ]  
 
@@ -82,7 +130,27 @@ export const Home = props=> {
                 <Link to='/products'><Button>Products</Button></Link>
                 <Link to='/bills'><Button>Bills</Button></Link>
                 <Link to='/'><Button color='error' onClick={handleLogout}>Logout</Button></Link>
-                
+                <br/><br/>
+                <div style={{display: 'flex', columnGap: '70px'}}>
+                    <Card variant='outlined'>
+                        <Chart 
+                            chartType='Bar' 
+                            width='700px' 
+                            height='400px' 
+                            data={billsPerDate} 
+                            options={billOptions}
+                        />
+                    </Card>
+                    <Card variant='outlined'>
+                        <Chart 
+                            chartType='Bar' 
+                            width='700px' 
+                            height='400px' 
+                            data={customersPerDay} 
+                            options={customerOptions}
+                        />
+                    </Card>
+                </div>
                 <h2>Dashboard: </h2>
                 <div style={{display: 'flex', columnGap: '390px'}}>
                     <Card sx={{borderColor: 'royalblue'}} variant='outlined'>
@@ -153,8 +221,8 @@ export const Home = props=> {
                         ): (<p>No bills added</p>)
                     }
                 </div>
-                </>:<><Link to='/register'><Button variant='contained'>Register</Button></Link>
-                <Link to='/login'><Button variant='contained'>Login</Button><small>(if already registered)</small></Link>
+                </>:<><Link to='/register'><Button variant='contained' sx={{marginRight: '10px'}}>Register</Button></Link>
+                <Link to='/login'><Button variant='contained'>Login</Button></Link><small>(if already registered)</small>
             </>}
         </div>
     )

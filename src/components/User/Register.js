@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
-import { Button } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import { TextArea, TextInput } from '../Form inputs/TextInput'
 import { registerUser } from '../../redux/userSlice'
 
@@ -38,7 +38,7 @@ export const Register = props=> {
 
     return (
         <div>
-            <h2>Register new user</h2>
+            <Typography><h2>Register new user</h2></Typography>
             <Formik
                 initialValues={{username: '', email: '', password: '', businessName: '', address: ''}}
                 validationSchema={validate}
@@ -53,9 +53,9 @@ export const Register = props=> {
                     <TextInput type='password' name='password' placeholder='Enter Password'/><br/>
                     <TextInput type='text' name='businessName' placeholder='Enter Business name'/><br/>
                     <TextArea type='text' name='address' placeholder='Enter Address'/><br/>
-                    <Button variant='contained' type='submit'>Register User</Button>
-                    <Button onClick={handleCancel} variant='contained' color='error'>Cancel</Button>
-                    <Link to='/login'><Button variant='contained'>Login</Button></Link><small>(if already registered)</small>
+                    <Button variant='contained' type='submit' sx={{marginRight: '10px'}}>Register User</Button>
+                    <Button onClick={handleCancel} variant='contained' color='error'>Cancel</Button><br/>
+                    <br/><Typography><big>Already have an account? Please <Link to='/login'>login</Link>!</big></Typography>
                 </Form>
             </Formik>
         </div>

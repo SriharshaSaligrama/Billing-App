@@ -64,12 +64,11 @@ export const AddBill = props=> {
                     initialValues={initialValues}
                     validationSchema={validate}
                     onSubmit={(values, {resetForm})=>{
-                        console.log(values)
+                        //console.log(values.customer)
                         dispatch(addBill(values))
                         alert('bill added succesfully')
                         resetForm({values: ''})
-                        //history.push(`/customerBills/${id}`)
-                        props.history.goBack()
+                        props.history.push(`/customerBills/${values.customer}`)
                     }}            
                 >
                     {({values})=>{

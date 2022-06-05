@@ -5,44 +5,79 @@ import { DataGrid } from '@mui/x-data-grid';
 import { handleLogout } from '../../selectors/handleLogout'
 import { useDispatch, useSelector } from 'react-redux'
 import { getBills, removeBill } from '../../redux/billSlice'
+import { getCustomers } from '../../redux/customerSlice';
 
 export const Bills = props=> {
   const dispatch=useDispatch()
 
   useEffect(()=>{
     dispatch(getBills())
+    dispatch(getCustomers())
   }, [dispatch])
 
   const {data}=useSelector(state=>state.bills)
+  const customers=useSelector(state=>state.customers.data)
 
   const handleDelete= id=>{
     dispatch(removeBill({id}))
   }
 
   const columns=[
-      {
-        field: 'Bills', 
-        renderCell: cellValues=>{
-          const id=cellValues.id
-          //console.log(id)
-          return(
-            <Link to={`bills/${id}`}><Button>{cellValues.row.date.slice(0,10)} - {id}</Button></Link>
-          )
-        }, 
-        width: 500,
+    {
+      field: 'Customer',
+      renderCell: cellValues=>{
+        const custName=customers?.filter(customer=>customer?._id===cellValues.row.customer)
+        return(
+          <>{custName[0]?.name}</>
+        )
       },
-      {
-        field: 'Actions', 
-        renderCell: cellValues=>{
-          const id=cellValues.id
-          //console.log(cellValues.row.date.slice(0,10))
-          return (
-            <Button variant='contained' color='error' onClick={()=>{handleDelete(id)}}>remove</Button>
-          )
-        },
-        width: 500,
-        sortable: false
+      width: 200,
+      sortable: false 
+    },
+    {
+      field: 'Date',
+      renderCell: cellValues=>{
+        return(
+          <>{cellValues.row.date.slice(0,10)}</>
+        )
       },
+      width: 200,
+      sortable: false 
+    },
+    {
+      field: 'Bills', 
+      renderCell: cellValues=>{
+        const id=cellValues.id
+        //console.log(id)
+        return(
+          <Link to={`bills/${id}`}><Button>{id}</Button></Link>
+        )
+      },
+      width: 400,
+      sortable: false
+    },
+    {
+      field: 'Total',
+      renderCell: cellValues=>{
+        return(
+          <>{cellValues.row.total}</>
+        )
+      },
+      width: 200,
+      sortable: false 
+    },
+    {
+      field: 'Actions', 
+      renderCell: cellValues=>{
+        const id=cellValues.id
+        //console.log(cellValues.row.date.slice(0,10))
+        return (
+          <Button variant='contained' color='error' onClick={()=>{handleDelete(id)}}>remove</Button>
+        )
+      },
+      width: 500,
+      sortable: false
+    },
   ]
   
   return (

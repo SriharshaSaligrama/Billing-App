@@ -17,7 +17,7 @@ export const loginUser= createAsyncThunk(
         const { formData, handleLogin} = values 
         //console.log(values)
         const response = await axios.post('users/login', formData)
-        handleLogin()
+        if(!response.data.errors) handleLogin()
         //console.log(values, handleLogin)
         //console.log(response.data)
         return response.data

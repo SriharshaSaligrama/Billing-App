@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
-import { Button } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import { TextInput } from '../Form inputs/TextInput'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginUser } from '../../redux/userSlice'
@@ -26,7 +26,7 @@ export const Login = props=> {
 
     return (
         <div>
-            <h2>Login</h2>
+            <Typography><h2>Login</h2></Typography>
             <Formik
                 initialValues={{email: '', password: ''}}
                 validationSchema={validate}
@@ -36,20 +36,20 @@ export const Login = props=> {
                         if(userLoggedIn.token) {
                             alert('Login Successful!')
                             localStorage.setItem('token', userLoggedIn.token)
-                            history.push('/account')
+                            history.push('/')
                         }
                     }
                     const data = {formData: {...values}, handleLogin: handleLogin}
-                    dispatch(loginUser(data ))
+                    dispatch(loginUser(data))
                    
                 }}
             >
                 <Form>
                     <TextInput type='email' name='email' placeholder='Enter Email'/><br/>
                     <TextInput type='password' name='password' placeholder='Enter Password'/><br/>
-                    <Button variant='contained' type='submit'>Login</Button>
-                    <Button onClick={handleCancel} variant='contained' color='error'>Cancel</Button>
-                    <Link to='/register'><Button variant='contained'>Register</Button></Link><small>(if not registered)</small>
+                    <Button variant='contained' type='submit' sx={{marginRight: '10px'}}>Login</Button>
+                    <Button onClick={handleCancel} variant='contained' color='error'>Cancel</Button><br/>
+                    <br/><Typography><big>If not yet registered, please <Link to='/register'>register</Link> to login</big></Typography>
                 </Form>
             </Formik>
         </div>

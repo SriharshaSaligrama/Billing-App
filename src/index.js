@@ -4,14 +4,16 @@ import App from './App';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom'; 
 import store from './redux/configureStore'
-import { getUser } from './redux/userSlice';
-import { getCustomers } from './redux/customerSlice';
-import { getProducts } from './redux/productSlice';
+// import { getUser } from './redux/userSlice';
+// import { getCustomers } from './redux/customerSlice';
+// import { getProducts } from './redux/productSlice';
 
-store.dispatch(getUser)
-store.dispatch(getCustomers)
-store.dispatch(getProducts)
-
+// if(localStorage.getItem('token')){
+//   console.log('hi')
+//   store.dispatch(getUser())
+//   store.dispatch(getCustomers())
+//   store.dispatch(getProducts())
+// }
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
