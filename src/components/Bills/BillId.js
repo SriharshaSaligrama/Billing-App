@@ -87,14 +87,15 @@ export const BillId= props=>{
                         pageSize={5} 
                         rowsPerPageOptions={[5]} 
                     />
-                    <Button>Grand Total: {data.total}</Button>
+                    <Button>Grand Total: {data.total}</Button><br/>
                 </div>: <p>No bills to show</p>
                 }
                 <br/><br/>
                 <div className='noPrint'>
-                    <Button variant='contained' onClick={handlePrint}>Print</Button>
+                    <Button variant='contained' onClick={handlePrint} style={{marginRight: '10px'}}>Print</Button>
                     <Button variant='contained' onClick={props.history.goBack}>Back</Button>
-                    <Link to={`/customerBills/${customerData?._id}`}><Button variant='contained'>{customerData?.name}'s bills</Button></Link>
+                    <br/><br/>
+                    <Link to={`/customerBills/${customerData?._id}`}><Button>{customerData?.name}'s bills</Button></Link>
                     {/* <Link to='/customers'><Button variant='contained'>Back to Customers</Button></Link> */}
                 </div>
             </>

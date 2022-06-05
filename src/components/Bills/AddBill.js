@@ -97,7 +97,7 @@ export const AddBill = props=> {
                                                                 </MenuItem>
                                                             ))}
                                                         </SelectInput>
-                                                        <TextInput type='number' name={`lineItems.${i}.quantity`} />
+                                                        <TextInput type='number' name={`lineItems.${i}.quantity`} style={{width:60}}/>
                                                         <Button 
                                                             variant='contained' 
                                                             color='error' 

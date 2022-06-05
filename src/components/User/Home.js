@@ -32,9 +32,9 @@ export const Home = props=> {
     totalProducts=allProducts.length
     totalBills=allBills.length
 
-    const data=allBills?.map(bill=>bill?.date)
+    const data=allBills.length>0?allBills.map(bill=>bill?.date):[]
     //console.log(amount)
-    const uniqueData=uniq(data)
+    const uniqueData=uniq(data)||[]
     //console.log(uniqueData)
     
     const dateBills=[]
