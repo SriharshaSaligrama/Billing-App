@@ -26,7 +26,7 @@ export const Login = props=> {
 
     return (
         <div>
-            <Typography><h2>Login</h2></Typography>
+            <h2>Login</h2>
             <Formik
                 initialValues={{email: '', password: ''}}
                 validationSchema={validate}

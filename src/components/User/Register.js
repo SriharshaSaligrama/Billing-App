@@ -38,7 +38,7 @@ export const Register = props=> {
 
     return (
         <div>
-            <Typography><h2>Register new user</h2></Typography>
+            <h2>Register new user</h2>
             <Formik
                 initialValues={{username: '', email: '', password: '', businessName: '', address: ''}}
                 validationSchema={validate}
