@@ -4,7 +4,7 @@ import axios from '../selectors/configAxios'
 export const registerUser= createAsyncThunk(
     'users/register',
     async (values)=>{
-        console.log(values)
+        //console.log(values)
         const response = await axios.post('users/register', values)
         //console.log(response.data)
         return response.data
